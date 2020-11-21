@@ -13,7 +13,7 @@ plugins {
 }
 
 group = "com.example"
-version = properties["application.version"]
+version = properties["application.version"]!!
 
 repositories {
     mavenCentral()
