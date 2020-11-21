@@ -43,7 +43,7 @@ configure<PublishingExtension> {
             artifactId = "application"
             version = project.version.toString()
 
-            from(components.findByName("shadow"))
+            project.shadow.component(this)
         }
     }
 }
