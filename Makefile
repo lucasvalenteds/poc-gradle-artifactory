@@ -7,7 +7,7 @@ JAR_NAME = application
 JAR_VERSION = 0.1.0
 JAR_FILE = $(JAR_NAME)-$(JAR_VERSION).jar
 
-deploy:
+publish:
 	@./gradlew clean shadowJar artifactoryPublish \
 			-Partifactory.url=$(ARTIFACTORY_URL) \
 			-Partifactory.repository=$(ARTIFACTORY_REPOSITORY) \
