@@ -12,6 +12,9 @@ plugins {
     id("com.jfrog.artifactory") version "4.18.0"
 }
 
+group = "com.example"
+version = "0.1.0"
+
 repositories {
     mavenCentral()
 }
@@ -28,21 +31,17 @@ configure<JavaPluginConvention> {
 }
 
 configure<ApplicationPluginConvention> {
-    mainClassName = "com.example.Main"
+    mainClassName = "$group.application.Main"
 }
 
-tasks.withType<ShadowJar> {
-    archiveBaseName.set(project.name)
-    archiveVersion.set(project.version.toString())
-    archiveClassifier.set("")
-}
+val publicationName: String = "application-jar"
 
 configure<PublishingExtension> {
     publications {
-        create<MavenPublication>("applicationJar") {
-            groupId = "com"
-            artifactId = "example"
-            version = "0.1.0"
+        create<MavenPublication>(publicationName) {
+            groupId = project.group.toString()
+            artifactId = "application"
+            version = project.version.toString()
 
             from(components.findByName("shadow"))
         }
@@ -59,9 +58,15 @@ configure<ArtifactoryPluginConvention> {
             setProperty("maven", true)
         })
         defaults(delegateClosureOf<GroovyObject> {
-            invokeMethod("publications", "applicationJar")
+            invokeMethod("publications", publicationName)
             setProperty("publishPom", true)
             setProperty("publishArtifacts", true)
         })
     })
+}
+
+tasks.withType<ShadowJar> {
+    archiveBaseName.set(project.name)
+    archiveVersion.set(project.version.toString())
+    archiveClassifier.set("")
 }
